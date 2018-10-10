@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.CestaActivity">
+
+    <ListView
+        android:id="@+id/lvCesta"
+        android:layout_width="257dp"
+        android:layout_height="297dp"
+        tools:layout_editor_absoluteX="52dp"
+        tools:layout_editor_absoluteY="158dp" />
+
+    <TextView
+        android:id="@+id/tvTotalItemCesta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total"
+        tools:layout_editor_absoluteX="151dp"
+        tools:layout_editor_absoluteY="29dp" />
+
+    <TextView
+        android:id="@+id/tvNomeClienteCesta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cliente"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="71dp" />
+
+    <TextView
+        android:id="@+id/tvVendedorCesta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vendedor"
+        tools:layout_editor_absoluteX="286dp"
+        tools:layout_editor_absoluteY="71dp" />
+</android.support.constraint.ConstraintLayout>

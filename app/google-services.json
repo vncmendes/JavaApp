@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "125254286731",
+    "firebase_url": "https://primeiroapp-94ec1.firebaseio.com",
+    "project_id": "primeiroapp-94ec1",
+    "storage_bucket": "primeiroapp-94ec1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:125254286731:android:de76747f79f06d01",
+        "android_client_info": {
+          "package_name": "br.edu.ifsul.primeiroapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "125254286731-dgc9gmfan0kdkg8i3l7jrh8o705gjhsl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ifsul.primeiroapp",
+            "certificate_hash": "c30de44f480b2aa451a894923fa1fc72694b24c5"
+          }
+        },
+        {
+          "client_id": "125254286731-utf3seqht1l2ivjhk17ogjrveoomnana.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDu5BoKuPB6AfVz5kCF-ndD03WTmjWfhXM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "125254286731-utf3seqht1l2ivjhk17ogjrveoomnana.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
