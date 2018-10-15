@@ -26,7 +26,7 @@
         android:layout_marginBottom="24dp"
         android:hint="@string/valorProduto"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/tvBtnProduto"
+        app:layout_constraintBottom_toTopOf="@+id/BtnVenderProduto"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvValorProduto" />
@@ -72,7 +72,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/tvBtnProduto"
+        android:id="@+id/BtnVenderProduto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="18dp"
@@ -85,21 +85,23 @@
         android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toStartOf="@+id/etQuantidade"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvQuantProduto" />
+        app:layout_constraintTop_toBottomOf="@+id/tvQuantProduto"
+        tools:text="Vender" />
 
     <EditText
         android:id="@+id/etQuantidade"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="36dp"
         android:layout_marginEnd="84dp"
         android:layout_marginRight="84dp"
         android:layout_marginTop="24dp"
 
         android:ems="10"
         android:inputType="numberSigned"
-        app:layout_constraintBottom_toBottomOf="@+id/tvBtnProduto"
+        app:layout_constraintBottom_toBottomOf="@+id/BtnVenderProduto"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvBtnProduto"
-        app:layout_constraintTop_toTopOf="@+id/tvBtnProduto" />
+        app:layout_constraintStart_toEndOf="@+id/BtnVenderProduto"
+        app:layout_constraintTop_toTopOf="@+id/BtnVenderProduto"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

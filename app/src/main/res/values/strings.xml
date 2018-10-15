@@ -6,7 +6,7 @@
     <string name="descricaoProduto">Descrição</string>
     <string name="valorProduto">Valor</string>
     <string name="qtdEstoqueProduto">Qtd Estoque</string>
-    <string name="btnComprar">Comprar</string>
+    <string name="btnComprar">Vender</string>
     <string name="janelaLogin">Login</string>
     <string name="HintEstoque">Estoque</string>
     <string name="ler_codigo_de_barras">Ler codigo de barras</string>

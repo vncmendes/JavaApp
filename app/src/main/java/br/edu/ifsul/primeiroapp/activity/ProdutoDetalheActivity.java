@@ -46,10 +46,10 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
         produto = (Produto) getIntent().getSerializableExtra("produto");
 
         //3 atualizar view
-        //atualizarView();
+        atualizarView();
 
-        Button btnComprar = findViewById(R.id.tvBtnProduto);
-        btnComprar.setOnClickListener(new View.OnClickListener() {
+        Button btnVender = findViewById(R.id.BtnVenderProduto);
+        btnVender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Item item = new Item();
@@ -58,7 +58,7 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
                 item.setSituacao(true);
                 item.setTotalItem(Integer.valueOf(etQuantidade.getText().toString()) * produto.getValor());
                 AppSetup.itens.add(item);
-                startActivity(new Intent(ProdutoDetalheActivity.this, CestaActivity.class));
+                startActivity(new Intent(ProdutoDetalheActivity.this, ClientesActivity.class));
 
             }
         });
