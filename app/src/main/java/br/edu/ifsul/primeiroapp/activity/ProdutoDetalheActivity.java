@@ -52,13 +52,30 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
         btnVender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Item item = new Item();
-                item.setProduto(produto);
-                item.setQuantidade(Integer.valueOf(etQuantidade.getText().toString()));
-                item.setSituacao(true);
-                item.setTotalItem(Integer.valueOf(etQuantidade.getText().toString()) * produto.getValor());
-                AppSetup.itens.add(item);
-                startActivity(new Intent(ProdutoDetalheActivity.this, ClientesActivity.class));
+                if(AppSetup.cliente == null){
+                    Toast.makeText(ProdutoDetalheActivity.this, "Selecione um cliente para venda.", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(ProdutoDetalheActivity.this, ClientesActivity.class));
+                }else{
+                    if(!etQuantidade.getText().toString().isEmpty()){
+                        if(Integer.parseInt(etQuantidade.getText().toString()) <= produto.getQuantidade().intValue()){
+                            //cria o item vendido e o adicona no carrinho
+                            Item itemPedido = new Item();
+                            itemPedido.setQuantidade(Integer.valueOf(etQuantidade.getText().toString()));
+                            itemPedido.setProduto(produto);
+                            itemPedido.getProduto().setSituacao(false);
+                            itemPedido.setTotalItem(produto.getValor()*itemPedido.getQuantidade());
+                            AppSetup.itens.add(itemPedido);
+                            Toast.makeText(ProdutoDetalheActivity.this,"Item adicionado ao carrinho.", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(ProdutoDetalheActivity.this, CestaActivity.class));
+                            finish();
+                        }else{
+                            Toast.makeText(ProdutoDetalheActivity.this, "Ultrapassa a quantidade em estoque.", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }else{
+                        Toast.makeText(ProdutoDetalheActivity.this, "Digite a quantidade.", Toast.LENGTH_SHORT).show();
+                    }
+                }
 
             }
         });

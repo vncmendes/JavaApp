@@ -68,7 +68,6 @@ public class ActivityLogin extends AppCompatActivity {
 
                             AppSetup.user = mAuth.getCurrentUser();
                             startActivity(new Intent(ActivityLogin.this, ProdutosActivity.class));
-                            //updateUI(user);
                             finish();
                         } else {
                             // If sign in fails, display a message to the user.

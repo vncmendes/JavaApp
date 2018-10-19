@@ -22,20 +22,21 @@
             android:name=".activity.ProdutoDetalheActivity"
             android:label="@string/titulo_produto" />
         <activity android:name=".activity.ClienteDetalheActivity"/>
-        <activity
-            android:name=".activity.ActivityLogin"
-            android:label="@string/janelaLogin">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".activity.ActivityLogin"/>
+
+
+        <activity android:name=".activity.ProdutosActivity" android:label="Produtos">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
-        <activity android:name=".activity.ProdutosActivity" />
+
         <activity android:name=".barcode.BarcodeCaptureActivity"/>
 
-        <activity android:name=".activity.ClientesActivity"/>
+        <activity android:name=".activity.ClientesActivity" android:label="Clientes"/>
 
-        <activity android:name=".activity.CestaActivity"></activity>
+        <activity android:name=".activity.CestaActivity" android:label="Carrinho"></activity>
     </application>
 
 </manifest>

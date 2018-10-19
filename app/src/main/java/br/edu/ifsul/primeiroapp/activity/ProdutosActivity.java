@@ -1,6 +1,8 @@
 package br.edu.ifsul.primeiroapp.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,6 +41,39 @@ public class ProdutosActivity extends AppCompatActivity {
     private List<Produto> produtos;
     private static final String TAG = "produtosActivity";
     private DatabaseReference myRef = null;
+
+
+    @Override
+    public void onBackPressed() {
+        if (!AppSetup.itens.isEmpty()) {
+            alertDialogSimNao("ATEN??O", "Se voc? sair do aplicativo, os itens do carrinho ser?o perdidos !");
+        }
+        else {
+            finish();
+        }
+    }
+
+    private void alertDialogSimNao(String titulo, String mensagem){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //add the title and text
+        builder.setTitle(titulo);
+        builder.setMessage(mensagem);
+        //add the buttons
+        builder.setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.setNegativeButton(R.string.nao, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(ProdutosActivity.this, "Opera??o cancelada.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

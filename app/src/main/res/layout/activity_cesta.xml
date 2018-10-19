@@ -8,9 +8,9 @@
 
     <ListView
         android:id="@+id/lvCesta"
-        android:layout_width="0dp"
-        android:layout_height="297dp"
-        android:layout_marginBottom="56dp"
+        android:layout_width="338dp"
+        android:layout_height="350dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="51dp"
         android:layout_marginLeft="51dp"
         android:layout_marginRight="51dp"

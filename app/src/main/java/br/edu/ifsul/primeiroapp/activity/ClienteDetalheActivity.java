@@ -40,9 +40,7 @@ public class ClienteDetalheActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AppSetup.cliente = cliente;
-                Intent intent = new Intent(ClienteDetalheActivity.this, CestaActivity.class);
-                startActivity(intent);
-                //finish();
+                finish();
             }
         });
 

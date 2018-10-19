@@ -43,10 +43,7 @@ public class ClientesActivity extends AppCompatActivity {
         lvclientes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent( ClientesActivity.this, ClienteDetalheActivity.class);
-                intent.putExtra("cliente", clientes.get(position));
-                startActivity(intent);
-                finish();
+                chamaDetalheCliente(position);
             }
         });
         clientes = new ArrayList<>();
@@ -75,6 +72,13 @@ public class ClientesActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    private void chamaDetalheCliente(int position) {
+        Intent intent = new Intent( ClientesActivity.this, ClienteDetalheActivity.class);
+        intent.putExtra("cliente", clientes.get(position));
+        startActivity(intent);
+        finish();
     }
 
     @Override
