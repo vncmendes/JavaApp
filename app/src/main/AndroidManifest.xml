@@ -22,21 +22,22 @@
             android:name=".activity.ProdutoDetalheActivity"
             android:label="@string/titulo_produto" />
         <activity android:name=".activity.ClienteDetalheActivity"/>
-        <activity android:name=".activity.ActivityLogin"/>
-
-
-        <activity android:name=".activity.ProdutosActivity" android:label="Produtos">
+        <activity android:name=".activity.ActivityLogin">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
 
-        <activity android:name=".barcode.BarcodeCaptureActivity"/>
 
+        <activity android:name=".activity.ProdutosActivity"
+            android:label="Produtos"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".barcode.BarcodeCaptureActivity"/>
         <activity android:name=".activity.ClientesActivity" android:label="Clientes"/>
 
-        <activity android:name=".activity.CestaActivity" android:label="Carrinho"></activity>
+        <activity android:name=".activity.CestaActivity" android:label="Carrinho"/>
     </application>
 
 </manifest>

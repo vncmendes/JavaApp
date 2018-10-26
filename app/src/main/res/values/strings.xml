@@ -26,5 +26,13 @@
     <string name="barcode_error">"Error reading barcode: %1$s"</string>
     <string name="sim">sim</string>
     <string name="nao">nao</string>
+    <string name="action_settings">action_settings</string>
+    <string name="foto_do_usu_rio">Foto do usuário</string>
+    <string name="foto_do_usuario">foto_do_usuario</string>
+    <string name="vendedor">Vendedor</string>
+    <string name="emaill">Email</string>
+    <string name="email">email</string>
+    <string name="navigation_drawer_open">Open navegation drawer</string>
+    <string name="navigation_drawer_close">Close navegation drawer</string>
 
 </resources>
