@@ -36,6 +36,9 @@
 
         <activity android:name=".barcode.BarcodeCaptureActivity"/>
         <activity android:name=".activity.ClientesActivity" android:label="Clientes"/>
+        <activity android:name=".activity.SobreActivity" android:label="Sobre"/>
+        <activity android:name=".activity.ClienteAdminActivity" android:label="Cliente ADM"/>
+        <activity android:name=".activity.ProdutoAdminActivity" android:label="Produto ADM"/>
 
         <activity android:name=".activity.CestaActivity" android:label="Carrinho"/>
     </application>

@@ -34,5 +34,22 @@
     <string name="email">email</string>
     <string name="navigation_drawer_open">Open navegation drawer</string>
     <string name="navigation_drawer_close">Close navegation drawer</string>
+    <string name="foto_produto">foto_produto</string>
+    <string name="codigo_de_barras">label_codigo_de_barras</string>
+    <string name="hint_codigo_barras">hint_codigo_de_barras</string>
+    <string name="label_nome">label_nome</string>
+    <string name="nome_produto">hint_nome_produto</string>
+    <string name="label_descricao">label_descricao</string>
+    <string name="hint_descricao">hint_descricao_produto</string>
+    <string name="label_valor">label_valor</string>
+    <string name="hint_valor">hint_valor</string>
+    <string name="label_quant">label_quantidade</string>
+    <string name="hint_quantidade">hint_quantidade_digite</string>
+    <string name="btn_inserir">bt_inserir</string>
+    <string name="toast_otimo_produto_cadastrado">toast_otimo_produto_cadastrado</string>
+    <string name="toast_produto_nao_cadastrado">toast_produto_nao_cadastrado</string>
+    <string name="toast_todos_campos_devem_preenchidos">toast_todos_campos_devem_preenchidos</string>
+    <string name="title_menu_lercodigodebarras">Ler Código de Barras</string>
+    <string name="texto_sobre">Texto Sobre</string>
 
 </resources>

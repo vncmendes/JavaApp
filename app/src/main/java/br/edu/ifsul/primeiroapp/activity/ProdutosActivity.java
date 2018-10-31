@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -48,16 +49,22 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
     private List<Produto> produtos;
     private static final String TAG = "produtosActivity";
     private DatabaseReference myRef = null;
+    private  DrawerLayout drawer;
 
 
     @Override
     public void onBackPressed() {
-        if (!AppSetup.itens.isEmpty()) {
-            alertDialogSimNao("ATEN??O", "Se voc? sair do aplicativo, os itens do carrinho ser?o perdidos !");
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            if (!AppSetup.itens.isEmpty()) {
+                alertDialogSimNao("ATEN??O", "Se voc? sair do aplicativo, os itens do carrinho ser?o perdidos !");
+            }
+            else {
+                finish();
+            }
         }
-        else {
-            finish();
-        }
+
     }
 
     private void alertDialogSimNao(String titulo, String mensagem){
@@ -92,7 +99,7 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
         setSupportActionBar(toolbar);
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -120,7 +127,7 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                
+
                 GenericTypeIndicator<List<Produto>> type = new GenericTypeIndicator<List<Produto>>() {};
                 produtos = dataSnapshot.getValue(type);
                 produtos.remove(null);
@@ -136,6 +143,52 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
 
 
         });
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        switch (item.getItemId()) {
+
+
+            case R.id.nav_carrinho: {
+                // Handle the camera action
+                if (AppSetup.itens.isEmpty()) {
+                    Toast.makeText(this, "Cesta Está Vazia !", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    startActivity(new Intent(this, CestaActivity.class));
+                }
+            }
+            case R.id.nav_clientes: {
+                startActivity(new Intent(this, ClientesActivity.class));
+            }
+            case R.id.nav_sobre: {
+                startActivity(new Intent(this, SobreActivity.class));
+            }
+            case R.id.nav_sair: {
+                if (!AppSetup.itens.isEmpty()) {
+                    alertDialogSimNao("ATEN??O", "Se voc? sair do aplicativo, os itens do carrinho ser?o perdidos !");
+                }
+                else {
+                    closeDrawer();
+                    finish();
+                }
+                break;
+            }
+            case R.id.nav_clienteAdm: {
+                startActivity(new Intent (this, ClienteAdminActivity.class));
+
+            }
+            case R.id.nav_produtoAdm: {
+                startActivity(new Intent (this, ProdutoAdminActivity.class));
+            }
+
+
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -234,9 +287,10 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
     private void atualizarView() {
         lvProdutos.setAdapter(new ProdutosAdapter(ProdutosActivity.this, produtos));
     }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+    private void closeDrawer() {
+        drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
     }
+
+
 }
