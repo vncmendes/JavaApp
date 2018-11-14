@@ -184,7 +184,6 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
                 startActivity(new Intent (this, ProdutoAdminActivity.class));
             }
 
-
         }
 
         drawer.closeDrawer(GravityCompat.START);

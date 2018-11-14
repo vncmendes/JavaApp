@@ -9,6 +9,7 @@ public class Cliente implements Serializable {
     private boolean situacao;
     private String url_foto;
     private String cpf;
+    private Long codigoDeBarras;
 
     public Cliente() {}
 
@@ -58,5 +59,13 @@ public class Cliente implements Serializable {
 
     public void setUrl_foto(String url_foto) {
         this.url_foto = url_foto;
+    }
+
+    public Long getCodigoDeBarras() {
+        return codigoDeBarras;
+    }
+
+    public void setCodigoDeBarras(Long codigoDeBarras) {
+        this.codigoDeBarras = codigoDeBarras;
     }
 }

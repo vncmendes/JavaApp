@@ -24,14 +24,12 @@ import br.edu.ifsul.primeiroapp.setup.AppSetup;
 public class CestaActivity extends AppCompatActivity {
 
 
-
     private ListView lvCesta;
     private TextView tvNomeCliente;
-    private TextView total;
+    private TextView tvTotalItemCesta;
     private TextView vendedor;
     public int i;
     private Double valortotal = new Double(0);
-    private TextView tvTotalItemCesta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,26 +39,38 @@ public class CestaActivity extends AppCompatActivity {
         lvCesta = findViewById(R.id.lvCesta);
 
         tvNomeCliente = findViewById(R.id.tvNomeClienteCesta);
-        total = findViewById(R.id.tvTotalItemCesta);
+        tvTotalItemCesta = findViewById(R.id.tvTotalItemCesta);
         //vendedor = findViewById(R.id.tvVendedorCesta);
 
         tvNomeCliente.setText(AppSetup.cliente.getNome().toString());
-        //total.setText(AppSetup.itens.get(0).getTotalItem().toString());
 
-        for (i=0;i<AppSetup.itens.size() ;i++){
-            valortotal += AppSetup.itens.get(i).getTotalItem();
-        }
+        //trata o click longo no cartão da Listview
+        lvCesta.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                alertDialogExcluirItem("Atenção", "Você realmente deseja excluir este item?", position);
 
-        total.setText(valortotal.toString());
+                return true;
+            }
+        });
 
+        //trata o click curto no cartão da Listview
+        lvCesta.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(CestaActivity.this, ProdutoDetalheActivity.class);
+                intent.putExtra("produto", AppSetup.itens.get(position).getProduto());
+                startActivity(intent);
+                AppSetup.itens.remove(position);
+                finish();
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        lvCesta.setAdapter(new CestaAdapter(CestaActivity.this, AppSetup.itens));
-
-
+        atualizarView();
     }
 
     @Override
@@ -73,12 +83,12 @@ public class CestaActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch(item.getItemId()){
-            case R.id.menuitem_salvar:{
+        switch (item.getItemId()) {
+            case R.id.menuitem_salvar: {
                 alertDialogSalvarPedido("Quase lá", "\nTotal do Pedido = " + NumberFormat.getCurrencyInstance().format(valortotal) + " . Confirmar?");
                 break;
             }
-            case R.id.menuitem_cancelar:{
+            case R.id.menuitem_cancelar: {
                 alertDialogCancelarPedido("Ops! Vai cancelar?", "Tem certeza que quer cancelar este pedido?");
                 break;
             }
@@ -87,7 +97,9 @@ public class CestaActivity extends AppCompatActivity {
         return true;
     }
 
-    private void alertDialogSalvarPedido(String titulo, String mensagem){
+
+
+    private void alertDialogSalvarPedido(String titulo, String mensagem) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         //add the title and text
         builder.setTitle(titulo);
@@ -120,13 +132,13 @@ public class CestaActivity extends AppCompatActivity {
         lvCesta.setAdapter(new CestaAdapter(CestaActivity.this, AppSetup.itens));
         //totaliza o pedido
         valortotal = new Double(0);
-        for(Item itemPedido : AppSetup.itens){
+        for (Item itemPedido : AppSetup.itens) {
             valortotal += itemPedido.getTotalItem();
         }
         tvTotalItemCesta.setText(NumberFormat.getCurrencyInstance().format(valortotal));
     }
 
-    private void alertDialogCancelarPedido(String titulo, String mensagem){
+    private void alertDialogCancelarPedido(String titulo, String mensagem) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         //add the title and text
         builder.setTitle(titulo);
@@ -150,4 +162,24 @@ public class CestaActivity extends AppCompatActivity {
 
         builder.show();
     }
+
+    private void alertDialogExcluirItem(String titulo, String mensagem, final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //add the title and text
+        builder.setTitle(titulo);
+        builder.setMessage(mensagem);
+        //add the buttons
+        builder.setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                AppSetup.itens.remove(position); //remove do carrinho
+                Toast.makeText(CestaActivity.this, "Produto removido.", Toast.LENGTH_SHORT).show();
+                atualizarView();
+            }
+
+        });
+
+        builder.show();
+    }
+
 }

@@ -5,12 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,12 +26,14 @@ import java.util.List;
 
 import br.edu.ifsul.primeiroapp.R;
 import br.edu.ifsul.primeiroapp.adapter.ClientesAdapter;
+import br.edu.ifsul.primeiroapp.barcode.BarcodeCaptureActivity;
 import br.edu.ifsul.primeiroapp.model.Cliente;
 import br.edu.ifsul.primeiroapp.model.Produto;
 import br.edu.ifsul.primeiroapp.setup.AppSetup;
 
 public class ClientesActivity extends AppCompatActivity {
 
+    private static final int RC_BARCODE_CAPTURE = 1;
     private ListView lvclientes;
     private List<Cliente> clientes;
     public static final String TAG = "clientesActivity";
@@ -72,6 +77,60 @@ public class ClientesActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuitem_barcode: {
+
+                Intent intent = new Intent (this, BarcodeCaptureActivity.class);
+                intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
+                intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
+                startActivityForResult(intent, RC_BARCODE_CAPTURE);
+                break;
+            }
+        }
+
+        return true;
+    }
+
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_BARCODE_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
+                    Log.d(TAG, "Barcode read: " + barcode.displayValue);
+                    //localiza o produto na lista (ou n?o)
+                    boolean flag = true;
+                    for (Cliente cliente : clientes){
+                        if(String.valueOf(cliente.getCodigoDeBarras()).equals(barcode.displayValue)){
+                            flag = false;
+                            Intent intent = new Intent(ClientesActivity.this, ClienteDetalheActivity.class);
+                            intent.putExtra("cliente", cliente);
+                            startActivity(intent);
+                            break;
+                        }
+                    }
+                    if(flag){
+                        Toast.makeText(this, "Cliente não cadastrado.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                else {
+                    Toast.makeText(this, R.string.barcode_failure, Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "No barcode captured, intent data is null");
+                }
+            }
+
+            else {
+                Toast.makeText(this, String.format(getString(R.string.barcode_error),
+                        CommonStatusCodes.getStatusCodeString(resultCode)), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     private void chamaDetalheCliente(int position) {
