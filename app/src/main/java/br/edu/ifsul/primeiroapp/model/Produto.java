@@ -11,8 +11,18 @@ public class Produto implements Serializable {
     private Integer quantidade;
     private boolean situacao;
     private String url_foto;
+    private String key;
 
     public Produto() {
+    }
+
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public Long getCodigoDeBarras() {

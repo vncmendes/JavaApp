@@ -22,12 +22,12 @@ import br.edu.ifsul.primeiroapp.setup.AppSetup;
 public class ProdutoDetalheActivity extends AppCompatActivity {
 
     private static final String TAG = "produtoDetalheActivity";
-    private Produto produto;
     private TextView tvNome;
     private TextView tvDescricao;
     private TextView tvValor;
     private TextView tvQuantidade;
     private EditText etQuantidade;
+    private Integer position = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +42,16 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
         tvQuantidade = findViewById(R.id.tvQuantProduto);
         etQuantidade = findViewById(R.id.etQuantidade);
 
-        //2 obtem o objeto anexado na intent
-        produto = (Produto) getIntent().getSerializableExtra("produto");
+
+        //obtém o objeto produto anexado a intent
+        position = getIntent().getExtras().getInt("position");
+        Log.d(TAG, "Positon = " + position);
+        Log.d(TAG, "Objeto selecionado = " + AppSetup.produtos.get(position));
 
         //3 atualizar view
         atualizarView();
+
+
 
         Button btnVender = findViewById(R.id.BtnVenderProduto);
         btnVender.setOnClickListener(new View.OnClickListener() {
@@ -57,13 +62,13 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
                     startActivity(new Intent(ProdutoDetalheActivity.this, ClientesActivity.class));
                 }else{
                     if(!etQuantidade.getText().toString().isEmpty()){
-                        if(Integer.parseInt(etQuantidade.getText().toString()) <= produto.getQuantidade().intValue()){
+                        if(Integer.parseInt(etQuantidade.getText().toString()) <= AppSetup.produtos.get(position).getQuantidade().intValue()){
                             //cria o item vendido e o adicona no carrinho
                             Item itemPedido = new Item();
                             itemPedido.setQuantidade(Integer.valueOf(etQuantidade.getText().toString()));
-                            itemPedido.setProduto(produto);
+                            itemPedido.setProduto(AppSetup.produtos.get(position));
                             itemPedido.getProduto().setSituacao(false);
-                            itemPedido.setTotalItem(produto.getValor()*itemPedido.getQuantidade());
+                            itemPedido.setTotalItem(AppSetup.produtos.get(position).getValor()*itemPedido.getQuantidade());
                             AppSetup.itens.add(itemPedido);
                             Toast.makeText(ProdutoDetalheActivity.this,"Item adicionado ao carrinho.", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(ProdutoDetalheActivity.this, CestaActivity.class));
@@ -84,10 +89,10 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
     }
 
     private void atualizarView() {
-        tvNome.setText(produto.getNome());
-        tvDescricao.setText(produto.getDescricao());
-        tvValor.setText(produto.getValor().toString());
-        tvQuantidade.setText(produto.getQuantidade().toString());
+        tvNome.setText(AppSetup.produtos.get(position).getNome());
+        tvDescricao.setText(AppSetup.produtos.get(position).getDescricao());
+        tvValor.setText(AppSetup.produtos.get(position).getValor().toString());
+        tvQuantidade.setText(AppSetup.produtos.get(position).getQuantidade().toString());
     }
 
 }

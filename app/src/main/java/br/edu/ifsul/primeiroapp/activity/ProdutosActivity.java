@@ -32,7 +32,10 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.CommonDataSource;
 
@@ -49,7 +52,8 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
     private List<Produto> produtos;
     private static final String TAG = "produtosActivity";
     private DatabaseReference myRef = null;
-    private  DrawerLayout drawer;
+    private DrawerLayout drawer;
+    public static List<String> keysProdutos = new ArrayList<>();
 
 
     @Override
@@ -59,15 +63,14 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
         } else {
             if (!AppSetup.itens.isEmpty()) {
                 alertDialogSimNao("ATEN??O", "Se voc? sair do aplicativo, os itens do carrinho ser?o perdidos !");
-            }
-            else {
+            } else {
                 finish();
             }
         }
 
     }
 
-    private void alertDialogSimNao(String titulo, String mensagem){
+    private void alertDialogSimNao(String titulo, String mensagem) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         //add the title and text
         builder.setTitle(titulo);
@@ -114,7 +117,7 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ProdutosActivity.this, ProdutoDetalheActivity.class);
-                intent.putExtra("produto", produtos.get(position));
+                intent.putExtra("position", position);
                 startActivity(intent);
             }
         });
@@ -128,11 +131,41 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
 
-                GenericTypeIndicator<List<Produto>> type = new GenericTypeIndicator<List<Produto>>() {};
-                produtos = dataSnapshot.getValue(type);
-                produtos.remove(null);
-                Log.d(TAG, "Value is: " + produtos);
-                atualizarView();
+                if (dataSnapshot.getValue() != null) {
+                    Log.d(TAG, "dados do firebase " + dataSnapshot.getValue());
+
+                    GenericTypeIndicator<Map<String, Produto>> type = new GenericTypeIndicator<Map<String, Produto>>() {
+                    };
+
+                    keysProdutos = new ArrayList<>(dataSnapshot.getValue(type).keySet());
+                    AppSetup.produtos = new ArrayList<>(dataSnapshot.getValue(type).values());
+
+                    for (int i = 0; i < AppSetup.produtos.size(); i++) {
+                        AppSetup.produtos.get(i).setKey(keysProdutos.get(i));
+
+                    }
+
+
+                    Collections.sort(AppSetup.produtos, new Comparator<Produto>() {
+                        @Override
+                        public int compare(Produto o1, Produto o2) {
+
+                            if (o1.getNome().compareToIgnoreCase(o2.getNome()) < 0)
+                                return -1;
+                            else if (o1.getNome().compareToIgnoreCase(o2.getNome()) > 0)
+                                return +1;
+                            else
+                                return 0;
+                        }
+                    });
+                    //produtos = dataSnapshot.getValue(type);
+                    //produtos.remove(null);
+                    //Log.d(TAG, "Value is: " + produtos);
+                    atualizarView();
+                } else {
+
+                    Toast.makeText(ProdutosActivity.this, "Não há dados cadastrados.", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -155,8 +188,7 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
                 // Handle the camera action
                 if (AppSetup.itens.isEmpty()) {
                     Toast.makeText(this, "Cesta Está Vazia !", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     startActivity(new Intent(this, CestaActivity.class));
                 }
             }
@@ -169,19 +201,18 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
             case R.id.nav_sair: {
                 if (!AppSetup.itens.isEmpty()) {
                     alertDialogSimNao("ATEN??O", "Se voc? sair do aplicativo, os itens do carrinho ser?o perdidos !");
-                }
-                else {
+                } else {
                     closeDrawer();
                     finish();
                 }
                 break;
             }
             case R.id.nav_clienteAdm: {
-                startActivity(new Intent (this, ClienteAdminActivity.class));
+                startActivity(new Intent(this, ClienteAdminActivity.class));
 
             }
             case R.id.nav_produtoAdm: {
-                startActivity(new Intent (this, ProdutoAdminActivity.class));
+                startActivity(new Intent(this, ProdutoAdminActivity.class));
             }
 
         }
@@ -194,7 +225,7 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
         switch (item.getItemId()) {
             case R.id.menuitem_barcode: {
 
-                Intent intent = new Intent (this, BarcodeCaptureActivity.class);
+                Intent intent = new Intent(this, BarcodeCaptureActivity.class);
                 intent.putExtra(BarcodeCaptureActivity.AutoFocus, true);
                 intent.putExtra(BarcodeCaptureActivity.UseFlash, false);
                 startActivityForResult(intent, RC_BARCODE_CAPTURE);
@@ -205,7 +236,7 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
         return true;
     }
 
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RC_BARCODE_CAPTURE) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
@@ -213,8 +244,8 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
                     Log.d(TAG, "Barcode read: " + barcode.displayValue);
                     //localiza o produto na lista (ou n?o)
                     boolean flag = true;
-                    for (Produto produto : produtos){
-                        if(String.valueOf(produto.getCodigoDeBarras()).equals(barcode.displayValue)){
+                    for (Produto produto : produtos) {
+                        if (String.valueOf(produto.getCodigoDeBarras()).equals(barcode.displayValue)) {
                             flag = false;
                             Intent intent = new Intent(ProdutosActivity.this, ProdutoDetalheActivity.class);
                             intent.putExtra("produto", produto);
@@ -222,24 +253,18 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
                             break;
                         }
                     }
-                    if(flag){
+                    if (flag) {
                         Toast.makeText(this, "Produto n?o cadastrado.", Toast.LENGTH_SHORT).show();
                     }
-                }
-
-                else {
+                } else {
                     Toast.makeText(this, R.string.barcode_failure, Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "No barcode captured, intent data is null");
                 }
-            }
-
-            else {
+            } else {
                 Toast.makeText(this, String.format(getString(R.string.barcode_error),
                         CommonStatusCodes.getStatusCodeString(resultCode)), Toast.LENGTH_SHORT).show();
             }
-        }
-
-        else {
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -259,7 +284,7 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //uma lista para nova camada de modelo da RecyclerView
+                //uma lista para nova camada de modelo da RecyclerViewif(dataSnapshot.getValue() != null){
                 List<Produto> produtosFilter = new ArrayList<>();
 
                 //um for-each na camada de modelo atual
@@ -284,8 +309,9 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
     }
 
     private void atualizarView() {
-        lvProdutos.setAdapter(new ProdutosAdapter(ProdutosActivity.this, produtos));
+        lvProdutos.setAdapter(new ProdutosAdapter(ProdutosActivity.this, AppSetup.produtos));
     }
+
     private void closeDrawer() {
         drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

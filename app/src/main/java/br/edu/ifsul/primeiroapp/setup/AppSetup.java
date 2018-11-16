@@ -9,6 +9,7 @@ import java.util.List;
 
 import br.edu.ifsul.primeiroapp.model.Cliente;
 import br.edu.ifsul.primeiroapp.model.Item;
+import br.edu.ifsul.primeiroapp.model.Produto;
 
 public class AppSetup {
 
@@ -16,6 +17,7 @@ public class AppSetup {
     private static DatabaseReference myRef = null;
     public static Cliente cliente = null;
     public static List<Item> itens = new ArrayList<>();
+    public static List<Produto> produtos = new ArrayList<>();
 
 
 
