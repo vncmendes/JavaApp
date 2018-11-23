@@ -3,9 +3,9 @@
     <string name="titulo_produto">Detalhe Produto</string>
     <string name="HintNomeProduto">Nome</string>
     <string name="HintNomeProdutoAdapter">Nome</string>
-    <string name="descricaoProduto">Descrição</string>
+    <string name="descricaoProduto">Descrição Produto</string>
     <string name="valorProduto">Valor</string>
-    <string name="qtdEstoqueProduto">Qtd Estoque</string>
+    <string name="qtdEstoqueProduto">Estoque: 00</string>
     <string name="btnComprar">Vender</string>
     <string name="janelaLogin">Login</string>
     <string name="HintEstoque">Estoque</string>
@@ -52,5 +52,8 @@
     <string name="toast_todos_campos_devem_preenchidos">toast_todos_campos_devem_preenchidos</string>
     <string name="title_menu_lercodigodebarras">Ler Código de Barras</string>
     <string name="texto_sobre">Texto Sobre</string>
+    <string name="hint_valor_produto">R$: 00,00</string>
+    <string name="hintnomeproduto">Nome Produto</string>
+
 
 </resources>

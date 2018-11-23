@@ -40,9 +40,9 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
 
         //1 mapeia os componentes da View
         tvNome = findViewById(R.id.tvNomeProduto);
-        tvDescricao = findViewById(R.id.tvQtdEstoque);
+        tvDescricao = findViewById(R.id.tvDescricao);
         tvValor = findViewById(R.id.tvValorProduto);
-        tvEstoque = findViewById(R.id.tvQuantProduto);
+        tvEstoque = findViewById(R.id.tvQtdEstoque);
         etQuantidade = findViewById(R.id.etQuantidade);
         btnVender = findViewById(R.id.BtnVenderProduto);
 
@@ -53,7 +53,7 @@ public class ProdutoDetalheActivity extends AppCompatActivity {
         Log.d(TAG, "Objeto selecionado = " + AppSetup.produtos.get(position));
 
         //3 atualizar view
-        atualizarView();
+//        atualizarView();
 
 
 
