@@ -1,6 +1,7 @@
 package br.edu.ifsul.primeiroapp.activity;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,10 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import br.edu.ifsul.primeiroapp.R;
 import br.edu.ifsul.primeiroapp.adapter.ClientesAdapter;
@@ -45,28 +49,46 @@ public class ClientesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_clientes);
 
         lvclientes = findViewById(R.id.lvclientes);
-        lvclientes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                chamaDetalheCliente(position);
-            }
-        });
-        clientes = new ArrayList<>();
-
+        //busca a referência para o database usando Singleton
         myRef = AppSetup.getInstance().child("clientes");
-        myRef.addValueEventListener(new ValueEventListener() {
+        //lê do banco
+        myRef.orderByChild("nome").addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-
-                GenericTypeIndicator<List<Cliente>> type = new GenericTypeIndicator<List<Cliente>>() {};
-                clientes = dataSnapshot.getValue(type);
-                clientes.remove(null);
-                Log.d(TAG, "Value is: " + clientes);
-                atualizarView();
+                Log.d(TAG, "Value is: \n" + dataSnapshot);
+                if (dataSnapshot.getValue() != null) {
+                    //cria um tipo generico do tipo map
+                    GenericTypeIndicator<Map<String, Cliente>> type = new GenericTypeIndicator<Map<String, Cliente>>() {
+                    };
+                    //converte o Map para List e armazena a lista das chaves dos clientes no Firebase (o UUID do cliente no Firebase)
+                    List<String> keys = new ArrayList<>(dataSnapshot.getValue(type).keySet());
+                    Log.d(TAG, "Keys dos clientes no Firebase (sem ordenação): \n" + keys);
+                    //converte o Map para List e armazena a lista de valores, isto é, os clientes em si
+                    clientes = new ArrayList<>(dataSnapshot.getValue(type).values());
+                    Log.d(TAG, "Clientes no Firebase (sem ordenação): \n" + clientes);
+                    //insere as keys dos clientes na lista de clientes da app. Isto serve para controlar o estoque.
+                    for (int i = 0; i < clientes.size(); i++) {
+                        clientes.get(i).setKey(keys.get(i));
+                    }
+                    //ordena a List pelo nome do cliente
+                    Collections.sort(clientes, new Comparator<Cliente>() {
+                        @Override
+                        public int compare(Cliente o1, Cliente o2) {
+                            if (o1.getNome().compareToIgnoreCase(o2.getNome()) < 0) return -1;
+                            else if (o1.getNome().compareToIgnoreCase(o2.getNome()) > 0) return +1;
+                            else return 0;
+                        }
+                    });
+                    Log.d(TAG, "Clientes ordenados pelo nome com a key do Firebase: \n" + clientes);
+                    atualizarView();
+                } else {
+                    Toast.makeText(ClientesActivity.this, "Não há dados cadastrados", Toast.LENGTH_SHORT).show();
+                }
             }
+
 
             @Override
             public void onCancelled(DatabaseError error) {
@@ -74,7 +96,14 @@ public class ClientesActivity extends AppCompatActivity {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
 
+        });
 
+        lvclientes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "Objeto clicado: " + clientes.get(position));
+                chamaDetalheCliente(clientes.get(position));
+            }
         });
 
     }
@@ -105,9 +134,7 @@ public class ClientesActivity extends AppCompatActivity {
                     for (Cliente cliente : clientes){
                         if(String.valueOf(cliente.getCodigoDeBarras()).equals(barcode.displayValue)){
                             flag = false;
-                            Intent intent = new Intent(ClientesActivity.this, ClienteDetalheActivity.class);
-                            intent.putExtra("cliente", cliente);
-                            startActivity(intent);
+                            chamaDetalheCliente(cliente);
                             break;
                         }
                     }
@@ -133,9 +160,9 @@ public class ClientesActivity extends AppCompatActivity {
         }
     }
 
-    private void chamaDetalheCliente(int position) {
+    private void chamaDetalheCliente(Cliente cliente) {
         Intent intent = new Intent( ClientesActivity.this, ClienteDetalheActivity.class);
-        intent.putExtra("cliente", clientes.get(position));
+        intent.putExtra("cliente", cliente);
         startActivity(intent);
         finish();
     }
@@ -173,9 +200,15 @@ public class ClientesActivity extends AppCompatActivity {
         });
 
         return true;
-    }
+        }
+
 
     private void atualizarView() {
-        lvclientes.setAdapter(new ClientesAdapter(ClientesActivity.this, clientes));
+        //cria um objeto da classe ClientesAdapter, um adaptador, Cliente -> View
+        ClientesAdapter dadosAdapter = new ClientesAdapter(this, clientes);
+        //associa o adaptador a ListView
+        lvclientes.setAdapter(dadosAdapter);
     }
-}
+
+    }
+

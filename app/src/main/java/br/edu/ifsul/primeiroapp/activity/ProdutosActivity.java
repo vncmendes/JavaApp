@@ -141,6 +141,8 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
         });
     }
 
+
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -276,6 +278,10 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        for (int i = 0; i < AppSetup.itens.size() ; i++) {
+            atualizaEstoque(i);
+        }
+
         //reset do setup da app
         AppSetup.itens = new ArrayList<>();
         AppSetup.produtos = new ArrayList<>();
@@ -308,6 +314,7 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
         } else {
             if (!AppSetup.itens.isEmpty()) {
                 alertDialogSimNao("ATEN??O", "Se voc? sair do aplicativo, os itens do carrinho ser?o perdidos !");
+
             } else {
                 finish();
             }
@@ -323,7 +330,7 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
         builder.setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (AppSetup.itens.isEmpty()) {
+                if (!AppSetup.itens.isEmpty()) {
                     for (int i = 0; i < AppSetup.itens.size() ; i++) {
                         atualizaEstoque(i);
                     }
@@ -359,6 +366,7 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
             }
         });
     }
+
 
 
 }

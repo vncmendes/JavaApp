@@ -10,6 +10,7 @@ public class Cliente implements Serializable {
     private String url_foto;
     private String cpf;
     private Long codigoDeBarras;
+    private String key; //atributo apenas local
 
     public Cliente() {}
 
@@ -67,5 +68,13 @@ public class Cliente implements Serializable {
 
     public void setCodigoDeBarras(Long codigoDeBarras) {
         this.codigoDeBarras = codigoDeBarras;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

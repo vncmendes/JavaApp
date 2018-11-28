@@ -185,9 +185,12 @@ public class CestaActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(CestaActivity.this, "Que pena! Pedido cancelado.", Toast.LENGTH_SHORT).show();
+                for (int j = 0; j < itens.size(); j++) {
+                    atualizaEstoque(i);
+                }
                 AppSetup.itens.clear();
                 AppSetup.cliente = null;
+                Toast.makeText(CestaActivity.this, "Que pena! Pedido cancelado.", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

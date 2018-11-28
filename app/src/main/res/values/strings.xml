@@ -54,6 +54,10 @@
     <string name="texto_sobre">Texto Sobre</string>
     <string name="hint_valor_produto">R$: 00,00</string>
     <string name="hintnomeproduto">Nome Produto</string>
+    <string name="hint_sobrenome">sobrenome</string>
+    <string name="hint_cpf">CPF no formato 123.456.789-00</string>
+    <string name="hint_nome">Nome</string>
+    <string name="bt_cadastrar">Cadastrar</string>
 
 
 </resources>

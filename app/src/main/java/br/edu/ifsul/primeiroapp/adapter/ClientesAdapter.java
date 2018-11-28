@@ -46,8 +46,8 @@ public class ClientesAdapter extends ArrayAdapter<Cliente> {
         tvNomeItem.setText(cliente.getNome());
         TextView tvCpfItem = convertView.findViewById(R.id.tvCpfItemAdapter);
         tvCpfItem.setText(cliente.getCpf());
-        TextView tvCodigo = convertView.findViewById(R.id.tvCodigoItemAdapter);
-        tvCodigo.setText(cliente.getCodigo().toString());
+        //TextView tvCodigo = convertView.findViewById(R.id.tvCodigoItemAdapter);
+        //tvCodigo.setText(cliente.getCodigo().toString());
         ImageView fotoCliente = convertView.findViewById(R.id.imgItemAdapter);
         if(cliente.getUrl_foto() != null) {
             fotoCliente.setImageURI(Uri.parse(cliente.getUrl_foto()));
