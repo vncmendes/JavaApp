@@ -97,7 +97,7 @@ public class ProdutosActivity extends AppCompatActivity implements NavigationVie
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-
+                Log.d(TAG, "Value is: \n" + dataSnapshot);
                 if (dataSnapshot.getValue() != null) {
                     Log.d(TAG, "dados do firebase " + dataSnapshot.getValue());
 
